@@ -1,0 +1,80 @@
+To carry out the research envisaged, the following papers are most relevant and provide important ideas / concepts / systems. We list out important contributions of each paper in detail.
+
+
+
+
+\begin{longtable}[!hbtp]{|p{1cm}|p{11cm}|p{2cm}|}
+% \centering
+  \hline
+  \textbf{S. No.} &
+  \textbf{Paper} &
+  \textbf{Citations} \\ \hline
+  \endfirsthead
+  \endhead
+  \endfoot
+  \endlastfoot
+
+  1 &
+  Prasanna Desikan, Nishith Pathak, Jaideep Srivastava, and Vipin Kumar. 2005. \textbf{Incremental page rank computation on evolving graphs}. In Special interest tracks and posters of the 14th international conference on World Wide Web (WWW '05). Association for Computing Machinery, New York, NY, USA, 1094–1095.\linebreak
+  DOI: https://doi.org/10.1145/1062745.1062885 &
+  54 \\ \hline
+  \multicolumn{3}{|p{14cm}|}{This paper describes a simple method for computing dynamic pagerank, based on the fact that change of out-degree of a node does not affect its pagerank (first order markov property). The part of the graph which is updated (edge additions / edge deletions / weight changes) is used to find the affected partition of the graph using BFS. The unaffected partition is simply scaled, and pagerank computation is done only for the affected partition. \footnote{https://gist.github.com/wolfram77/f0a7534d49d5c07d4479ec3966c5d635}} \\ \hline
+
+  2 &
+  Yen-Yu Chen, Qingqing Gan, and Torsten Suel. 2002. \textbf{I/O-efficient techniques for computing pagerank}. In Proceedings of the eleventh international conference on Information and knowledge management (CIKM '02). Association for Computing Machinery, New York, NY, USA, 549–557.\linebreak
+  DOI: https://doi.org/10.1145/584792.584882 &
+  33 \\ \hline
+  \multicolumn{3}{|p{14cm}|}{This paper describes a technique to partition the link file of the whole file into blocks of a range of destination nodes, with partial source nodes, so that it is possible to run power iteration of pagerank of massive graphs which do not fit in memory. The graphs must be stored on disk, and partitions of the graphs are scanned in every iteration until the ranks converge. Unlike Haveliwala's technique, this is similar to pull based pagerank. Both methods have similarities with join techniques in database systems. Topic-sensitive pagerank is also discussed which finds pagerank of graphs related to a specific keywords beforehand, and merges them together based upon the query (might return better results than global pagerank). This requires small adjustments to the random jump probability factor $(1-d)$. \footnote{https://gist.github.com/wolfram77/925cede0214aa0f391f34fa8ce137290}} \\ \hline
+
+  3 &
+  Paritosh Garg and Kishore Kothapalli. 2016. \textbf{STIC-D: algorithmic techniques for efficient parallel pagerank computation on real-world graphs}. In Proceedings of the 17th International Conference on Distributed Computing and Networking (ICDCN '16). Association for Computing Machinery, New York, NY, USA, Article 15, 1–10.\linebreak
+  DOI: https://doi.org/10.1145/2833312.2833322 &
+  7 \\ \hline
+  \multicolumn{3}{|p{14cm}|}{In this paper, the authors exploit the reducibility of dead-end free graphs to compute PageRanks. They first split the vertices into strongly connected components (SCCs) and represent each SCC as a vertex in a block-graph. Each SCC is then processed as per its topological order in the block-graph. This enables them to reduce the operating memory requirement, thanks to the smaller size of SCCs that are processed in one go. As SCCs are processed in topological order, unnecessary iterations on vertices that are unlikely to converge are avoided. Processing vertices grouped into SCCs also improves performance due to inherent spatial locality within an SCC. In addition, this method allows SCCs residing on the same level in the block-graph to be processed independently of each other. This is demonstrated by the authors by processing each such SCC in parallel with OpenMP. They also present three algorithmic techniques for eliminating redundancies in PageRank computation, namely skipping repeated computation on in-identical vertices (minimize redundant computation), short circuiting chain vertices (help accelerate convergence), and skipping computation on vertices that appear to have converged (minimize redundant computation).The suitability of these techniques depend upon the nature of input graph. They study the techniques on four classes of real-world graphs: web graphs, social networks, citation and collaboration networks, and road networks. Their implementation achieves an average speedup of 32\% compared to a baseline implementation. \footnote{https://gist.github.com/wolfram77/bb09968cc0e592583c4b180243697d5a}} \\ \hline
+
+  4 &
+  Stergios Stergiou. 2020. \textbf{Scaling PageRank to 100 Billion Pages}. Proceedings of The Web Conference 2020. Association for Computing Machinery, New York, NY, USA, 2761–2767.\linebreak
+  DOI: https://doi.org/10.1145/3366423.3380035 &
+  1 \\ \hline
+  \multicolumn{3}{|p{14cm}|}{In this paper, the author exploits the fact the communication required between iterations is identical. He uses this to develop a new communication format that allows significant reduction in bandwidth requirement. He experiments on massive web graphs with up to 38 billion vertices and 3.1 trillion edges, requiring a per-iteration time of 34.4 seconds, which is more than an order of magnitude improvement over the state-of-the-art. \footnote{https://gist.github.com/wolfram77/10964cd26f11f7a7299e7b74a0be7e7e}} \\ \hline
+
+  5 &
+  M. Naim, F. Manne, M. Halappanavar and A. Tumeo,  "\textbf{Community Detection on the GPU}," in 2017 IEEE International Parallel and Distributed Processing Symposium (IPDPS), Orlando, Florida, USA, 2017 pp. 625-634.\linebreak
+  DOI: 10.1109/IPDPS.2017.16 &
+  18 \\ \hline
+  \multicolumn{3}{|p{14cm}|}{This paper discusses a GPU implementation of the Louvain community detection algorithm. The implementation in this report uses the fine-grained approach such that each edge (not in all cases) is assigned a thread. The algorithm implemented in this paper is lock free, and uses only atomic add and compare-and-swap (CAS) operations. Only moves of vertices from higher community id to lower community id are allowed to avoid race conditions. Aggregation of communities into super-vertices in a new graph CSR is also performed on the GPU with a similar thread management and hash tables. In addition, the authors employ the idea of using higher threshold for modularity gain in the initial rounds. Speedup is observed to be critically dependent upon threshold value. The relaxed strategy of local moving used here also leads to significantly reduced number of phases in certain cases, though this is offset by the algorithm spending more time in each iteration. \footnote{https://gist.github.com/wolfram77/7e72c9b8c18c18ab908ae76262099329}} \\ \hline
+
+  6 &
+  N. Zarayeneh and A. Kalyanaraman, "\textbf{Delta-Screening: A Fast and Efficient Technique to Update Communities in Dynamic Graphs}," in IEEE Transactions on Network Science and Engineering, vol. 8, no. 2, pp. 1614-1629, 1 April-June 2021.\linebreak
+  DOI: 10.1109/TNSE.2021.3067665 &
+  0 \\ \hline
+  \multicolumn{3}{|p{14cm}|}{In this paper, heuristics for skipping out most likely unaffected vertices for a modularity-based community detection method like Louvain and SLM (Smart Local Moving) is given. All edge batches are undirected, and sorted by source vertex id. For edge additions, source vertex i, highest modularity changing edge vertex j*, i's neighbors, and j*'s community are marked as affected. For edge deletions, where i and j must be in the same community, i, j, i's neighbors, and i's community are marked as affected. Performance is compared with static, dynamic baseline (incremental), and this method (both Louvain and SLM). Comparison is also done with "DynaMo" and "Batch" community detection methods. \footnote{https://gist.github.com/wolfram77/c51f3580d7a76fa5c0a78491569df5ce}} \\ \hline
+
+  7 &
+  Brian Wheatman, Helen Xu. \textbf{A Parallel Packed Memory Array to Store Dynamic Graphs}. ALENEX 2021: Pages 31-45.\linebreak
+  DOI: 10.1137/1.9781611976472.3 &
+  3 \\ \hline
+  \multicolumn{3}{|p{14cm}|}{Here they provide proof of a concurrently updateable data structure for dynamic graphs. It is an extension of CSR with free spaces in between so new edges can be added or removed. If there is no free space, edges can be redistributed within a tree-like hierarchy of blocks (leaves). If there is still no space, the size can be doubled. Looking up an edge still takes O(logN) like in CSR. They compare it to Aspen (dynamic graph streaming) and Ligra (static CSR) /Ligra+ (static compressed CSR) and find it to be close in performance to Ligra+ (Ligra slightly faster). Since PPCSR is not compressed and has free space, it occupies the most space. They use a (popcount based) lock order so that it is deadlock free. \footnote{https://gist.github.com/wolfram77/5e2e7349d062b9dfa1bbf0445c7c2e01}} \\ \hline
+
+  8 &
+  Qinggang Wang, Long Zheng, Yu Huang, Pengcheng Yao, Chuangyi Gui, Xiaofei Liao, Hai Jin, Wenbin Jiang, and Fubing Mao. 2021. \textbf{GraSU: A Fast Graph Update Library for FPGA-based Dynamic Graph Processing}. In The 2021 ACM/SIGDA International Symposium on Field-Programmable Gate Arrays (FPGA '21). Association for Computing Machinery, New York, NY, USA, 149–159.\linebreak
+  DOI: https://doi.org/10.1145/3431920.3439288 &
+  2 \\ \hline
+  \multicolumn{3}{|p{14cm}|}{In this paper researchers focus on optimizing graph update though a caching technique using on-chip UltraRAM of FPGA. For dynamic graphs we can work on graph update, or graph algorithms. They work on graph updates. They list geomean speedup. For graph data structure they use Packed Memory Array (PMA) with CSR representation which supports fast edge addition and removal (I think they also mentioned use of fine-grained locking, instead of a per-vertex lock). A bitmap technique is used to avoid storing both UltraRAM and off-chip DRAM offsets. Algorithms to determine which vertex-edges to cache are run overlapped with graph algorithms (hidden overhead). It is based on "rich gets richer", that is high-degree vertices/recently updated vertices are most updated. Vertex data is stored in on-chip BRAM. Graph update is performed in batches. GraSU can be integrated with existing FPGA graph accelerators for static graphs. \footnote{https://gist.github.com/wolfram77/293b3a661759870482c7ceb21f1cb597}} \\ \hline
+
+  9 &
+  O. Green and D. A. Bader, "\textbf{cuSTINGER: Supporting dynamic graph algorithms for GPUs}," 2016 IEEE High Performance Extreme Computing Conference (HPEC), 2016, pp. 1-6.\linebreak
+  DOI: 10.1109/HPEC.2016.7761622 &
+  24 \\ \hline
+  \multicolumn{3}{|p{14cm}|}{These people wrote the first data structure for maintaining dynamic graphs with NVIDIA CUDA GPUs. Unlike STINGER which uses a block linked-list and GT-STINGER which uses Array of Structures (AoS), here they instead used Structure of Arrays (SoA) which is not only more suitable to GPU memory access, but also allows smaller allocations modes (memory is a premium in GPU). They use a custom memory manager which speeds up memory management (instead of using system memory manager). The data structure used is the standard adjacency list (CSR) and pointers are updated when the edge list has to grow. It could handle upto 10 million updates per second (large batch sizes), and ran a static graph algorithm (triangle counting) 1-10\% slower. This shows that cuSTINGER can also be used with static graph algorithms. Dynamic graph algorithms should run much faster. \footnote{https://gist.github.com/wolfram77/a4e430a45be95abad16c52643261a966}} \\ \hline
+
+  10 &
+  M. Besta, M. Fischer, V. Kalavri, M. Kapralov and T. Hoefler, "\textbf{Practice of Streaming Processing of Dynamic Graphs: Concepts, Models, and Systems}" in IEEE Transactions on Parallel \& Distributed Systems (2021), vol. no. 01, pp. 1-1, 5555.\linebreak
+  DOI: 10.1109/TPDS.2021.3131677 &
+  10 \\ \hline
+  \multicolumn{3}{|p{14cm}|}{This is a huge review paper discussing a lot about several graph streaming frameworks, and graph databases. GPU frameworks given are cuSTINGER, EvoGraph, Hornet, faimGraph, GPMA. Gap between databases and frameworks seems to be closing. \footnote{https://gist.github.com/wolfram77/7e2a17af8ec541ddcaf3344ec9b90edf}} \\ \hline
+
+% \vspace{0.3 cm}
+\caption{List of Selected papers}
+\label{tab:papers}
+\end{longtable}

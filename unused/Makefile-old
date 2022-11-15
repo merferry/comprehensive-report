@@ -1,0 +1,44 @@
+TARGETS: header.dvi
+
+.PHONY: header.ps header.pdf short_writeup.pdf clean loi
+
+header.dvi: clean
+	pdflatex header && bibtex header && pdflatex header && bibtex header; \
+	pdflatex header && bibtex header && pdflatex header
+	echo "Number of characters = `wc -m text/summary.tex | awk '{ print $$1 }'`"
+
+header.ps: header.dvi
+	dvips -t letter header.dvi -o header.ps
+
+header.pdf: header.ps
+	ps2pdf13 header.ps
+
+loi:
+	pdflatex loi/loi.tex
+
+final: header.dvi
+	pdftk header.pdf cat 1-1 output summary.pdf
+	pdftk header.pdf cat 2-16 output proposal.pdf
+	pdftk header.pdf cat 17-25 output references.pdf
+	pdftk header.pdf cat 26-26 output data_plan.pdf
+	pdftk header.pdf cat 27-end output mgmt_plan.pdf
+
+#	dvips -t letter header.dvi -p 1 -l 1 -o summary.ps
+#	ps2pdf summary.ps
+#	dvips -t letter header.dvi -p =2 -l 16 -o proposal.ps
+#	ps2pdf proposal.ps
+#	dvips -t letter header.dvi -p 16 -o references.ps
+#	ps2pdf references.ps
+
+view: header.ps
+	gv header.ps &
+
+clean:
+	rm -f header.blg header.dvi header.log header.aux header.bbl \
+		header.ps header.pdf header.lof header.lot header.toc \
+		`find . -name '*~'` _region_* summary.ps  \
+		proposal.ps references.ps text/*.bak
+	rm -f one-pager.blg one-pager.dvi one-pager.log one-pager.aux one-pager.bbl \
+		one-pager.ps one-pager.pdf one-pager.lof one-pager.lot one-pager.toc
+	rm -f loi.pdf loi.log loi.aux summary.pdf proposal.pdf references.pdf wbs.pdf \
+        data_plan.pdf post_doc.pdf

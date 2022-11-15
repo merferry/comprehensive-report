@@ -1,0 +1,88 @@
+\documentclass[11pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{comment,times}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage[caption=false]{subfig}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{longtable}
+\usepackage{setspace}
+\usepackage[skip=20pt plus1pt, indent=20pt]{parskip}
+\usepackage{atbegshi}
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\newcommand{\vars}{\texttt}
+\newcommand{\func}{\textrm}
+\let\oldReturn\Return
+\renewcommand{\Return}{\State\oldReturn}
+\newcommand*\Let[2]{\State #1 $\gets$ #2}
+\algrenewcommand\alglinenumber[1]{
+  {\sf\footnotesize\addfontfeatures{Colour=888888,Numbers=Monospaced}#1}
+}
+\algrenewcommand\algorithmicrequire{\textbf{Precondition:}}
+\algrenewcommand\algorithmicensure{\textbf{Postcondition:}}
+
+
+\textwidth 6.5in
+\textheight 9.5in
+\oddsidemargin 0pt
+\evensidemargin 0pt
+\topmargin -67pt
+
+\captionsetup{font=footnotesize}
+% \AtBeginDocument{\AtBeginShipoutNext{\AtBeginShipoutDiscard}}
+% \renewcommand{\chaptername}{Section}
+\newcommand{\monolithicPR}{Algorithm \textsc{DynamicMonolithicPR}}
+\newcommand{\levelwisePR}{Algorithm \textsc{DynamicLevelwisePR}}
+\newcommand{\X}{$\times$}
+\newcommand{\x}{$\times$}
+
+
+
+
+\title{
+  Exploring Optimizations for Dynamic Graph Algorithms on the GPU \\
+  {\small Comprehensive Report}
+  {\includegraphics[width=0.99\textwidth]{out/logo-iiit.jpg}}
+}
+\author{
+  \textbf{Subhajit Sahu} \\
+  \textbf{Advisor: Kishore Kothapalli} \\
+  Center for Security, Theory, and Algorithmic Research (CSTAR) \\
+  International Institute of Information Technology, Hyderabad (IIITH) \\
+  Gachibowli, Hyderabad, India - 500 032 \\
+  subhajit.sahu@research.iiit.ac.in
+}
+
+
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+%\onehalfspacing
+
+\chapter{Introduction}
+\input{01-introduction}
+
+\chapter{Literature survey}
+\input{02-survey}
+
+\chapter{List of Selected Papers}
+\input{03-papers}
+
+\chapter{Parallel Dynamic Algorithms for Computing PageRank}
+\input{04-work}
+
+\chapter{Further Studies planned}
+\input{05-future}
+
+\appendix
+\small
+\bibliographystyle{IEEEtran}
+\bibliography{inc/References}
+\end{document}

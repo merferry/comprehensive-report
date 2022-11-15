@@ -1,0 +1,32 @@
+\section{PageRank Algorithm}
+
+We consider massive graphs that do not fit on a single machine. To process the PageRank values of the graph as streams of updates arrive, we would need a distributed collection of machines, such as a multi-GPU or a multi-CPU collection. We think of a primary/secondary model where the primary receives the updates and works along with the secondaries to process the update as a sliding-window.
+
+The secondaries store pieces of the graph as a partitioning of the graph. The primary has to keep track of which vertex is in which partition and hence in which secondary. This information should be stored in light-weight data structure at the primary since the space at the primary is not to exceed $O(|V|)$. So, the partitioning structure should also help keep the size of this information small. Our approach for this could include the use of multiple bloom filters instead of using a large hash-table.
+
+% \singlespacing
+Beyond the storage, the solution has the following main steps:
+\begin{itemize}[itemsep=-1.5em,topsep=0em]
+% \topsep -1em
+% \itemsep -1.5em
+\item Receive a batch of updates at the primary.
+\item Use the data structure at the primary to identify the secondaries that own the edges in the update.
+\item Send the edges to the respective secondaries.
+\item Process the edges at each secondary in a parallel manner.
+\item Any global computation as needed across the secondaries.
+\item Update the partition structure as needed.
+\end{itemize}
+% \onehalfspacing
+
+Answers to the above questions depend on the nature of partitioning used. If the partitioning is based on strongly connected components, then, the storage at the primary can be $O(n)$. We will keep vertex id, component id, and secondary id for each vertex. Based on the computation also, there may be additional communication needed between the secondaries. In the case of PageRank, we will also have some dependencies in terms of which components need the final PageRank values from other components.
+
+
+
+
+\section{Community Detection}
+
+Community detection is a memory intensive operation, similar to PageRank. We note that dynamic community detection based on the Louvain algorithm using a delta-screening approach has been proposed that prunes out nodes that are unlikely to change communities on a given graph delta. This has been implemented with a sequential algorithm on the CPU \cite{com-zarayeneh21}. We intend to adapt this approach onto the GPU, which would enable users of the algorithm with a significantly reduced computation time. For this, we would use a GPU implementation of the static Louvain algorithm as our baseline \cite{com-naim17}.
+
+We plan to use the Compressed Sparse Row (CSR) format for representing the graph on the GPU. This also includes aggregate super-vertex graphs, which would be created through device code based on the results of the local moving phase. For vertex-to-community determination in the local moving phase, we wish to explore the impact of hash vs sort based approaches.
+
+It should be noted that both the PageRank and the Louvain algorithm (especially) require a significant number of indirect memory accesses. This can be somewhat managed by the GPU through automatic warp switching. However, this is not an ideal solution as it introduces additional latency and has increased power consumption. Similar to how processor in memory (PIM) architectures are being explored in the field of machine learning, we wager that indirect memory access architectures, such as the IMP \cite{memory-yu15}, would be a part of memory hardware used for graph processing. It may be noted that paging in memory is already a form of indirect memory access, though it is handled by the CPU, not the DRAM. We therefore would like to explore the possible performance improvement achievable with such hardware through detailed simulations.
